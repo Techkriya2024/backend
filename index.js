@@ -11,6 +11,8 @@ const fileUpload = require('express-fileupload');
 // Remove Before Deployment (Dependency)
 const dotenv = require('dotenv');
 
+const routes = require('./routes');
+
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
@@ -28,7 +30,9 @@ app.use(
     })
 )
 
-app.get("/",(req,res) => {
+app.use("/api/v1",routes);
+
+app.get("/",(_,res) => {
     return res.status(200).json({
         success:true,
         message:"Server is Running..."
