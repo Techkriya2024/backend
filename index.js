@@ -14,6 +14,9 @@ const dotenv = require('dotenv');
 const routes = require('./routes');
 
 const PORT = process.env.PORT || 4000;
+const ENV = process.env.NODE_ENV || 'development';
+
+const HOST = ENV === "development" ? "localhost" : "0.0.0.0";
 
 app.use(express.json());
 app.use(cookieParser());
@@ -39,6 +42,6 @@ app.get("/", (_, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`App is Running at PORT ${PORT}`);
+app.listen(PORT, HOST, () => {
+    console.log(`App is Running at ${HOST}:${PORT}`);
 })
