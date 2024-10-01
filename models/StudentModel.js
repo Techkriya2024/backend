@@ -5,7 +5,6 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: [true, "User ID is required"],
     unique: true,
-    minlength: [6, "User ID must be at least 6 characters long"],
   },
   name: {
     type: String,
@@ -21,13 +20,10 @@ const StudentSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minlength: [8, "Password must be at least 8 characters long"],
   },
   year: {
     type: Number,
     required: true,
-    min: [1, "Year cannot be less than 1"],
-    max: [4, "Year cannot be more than 4"],
   },
   college: {
     type: String,
@@ -38,12 +34,11 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Registration number is required"],
     unique: true,
-    match: [/^\d{8}$/, "Registration number must be exactly 8 digits"],
+    match: [/^\d{7}$/, "Registration number must be exactly 8 digits"],
   },
   coins: {
     type: Number,
     default: 0,
-    min: [0, "Coins cannot be negative"],
   },
   outsider: {
     type: Boolean,
