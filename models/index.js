@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const Event = require('../models/Event');
-const Club = require('../models/Club');
+const Student = require('./StudentModel');
+const Event = require('./EventModel');
+const Club = require('./ClubModel');
 
-module.exports = {User, Event, Club};
+module.exports = {Student, Event, Club};
