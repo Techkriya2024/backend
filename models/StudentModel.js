@@ -34,7 +34,6 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Registration number is required"],
     unique: true,
-    match: [/^\d{7}$/, "Registration number must be exactly 8 digits"],
   },
   coins: {
     type: Number,
