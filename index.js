@@ -5,7 +5,7 @@ const {dbConnect} = require('./config/database');
 dbConnect();
 
 const cookieParser = require('cookie-parser');
-const cors = require('cors');  
+const cors = require('cors');
 const fileUpload = require('express-fileupload');
 
 // Remove Before Deployment (Dependency)
@@ -19,26 +19,26 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin:"*",
-        credentials:true
+        origin: "*",
+        credentials: true
     })
 )
 app.use(
     fileUpload({
-        useTempFiles:true,
-        tempFileDir:"/temp"
+        useTempFiles: true,
+        tempFileDir: "/temp"
     })
 )
 
-app.use("/api/v1",routes);
+app.use("/api/v1", routes);
 
-app.get("/",(_,res) => {
+app.get("/", (_, res) => {
     return res.status(200).json({
-        success:true,
-        message:"Server is Running..."
+        success: true,
+        message: "Server is Running..."
     });
 });
 
-app.listen(PORT,() => {
+app.listen(PORT, () => {
     console.log(`App is Running at PORT ${PORT}`);
 })
