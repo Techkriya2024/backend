@@ -1,5 +1,6 @@
 const Student = require("../models/StudentModel");
 const Event = require('../models/EventModel');
+const {MailSender} = require('../utilities');
 
 const editUser = async (req, res) => {
     try{
@@ -117,6 +118,8 @@ const registerNewEvent = async (req, res) => {
 
         await Student.findByIdAndUpdate(userId, {$push: {registered_events: eventId}}, {new: true});
         await Event.findByIdAndUpdate(eventId, {$push: {registered_users: userId}}, {new: true});
+
+        // Send Successful Registration Mail
 
         return res.status(200).json({
             success: true,
