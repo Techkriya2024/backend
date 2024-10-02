@@ -4,8 +4,10 @@ const otpGenerator = require("otp-generator")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailSender = require('../utilities');
+const otpTemplate = require('../mailTemplates/otpTemplate');
+const resetPasswordTemplate = require('../mailTemplates/resetPasswordTemplate');
 const crypto = require("crypto");
-require("dotenv").config()
+require("dotenv").config();
 
 exports.sendOTP = async(req,res)=>{
     try{
@@ -38,7 +40,7 @@ exports.sendOTP = async(req,res)=>{
         await OTP.create(otpPayload);
 
         try{
-            // await mailSender(email,"Verification OTP | Techkriya'24", emailVerification(otp));
+            await mailSender(email,"Verification OTP | Techkriya'24", otpTemplate(otp));
         }catch(e){
             console.log(e);
             return res.status(400).json({
@@ -213,7 +215,7 @@ exports.resetPasswordToken = async (req,res) => {
 
         const url = `http://localhost:3000/updatePassword/${token}`;
 
-        await SendEmail(email,"Reset Password Link | Techkriya'24",resetPassword(url));
+        await SendEmail(email,"Reset Password Link | Techkriya'24", resetPasswordTemplate(url));
 
         return res.status(200).json({
             success:true,
