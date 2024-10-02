@@ -31,6 +31,9 @@ const StudentSchema = new mongoose.Schema({
     unique: true,
     match: [/^\d+$/, "Only digits are allowed"],
   },
+  token:{
+    type : String,
+  },
   coins: {
     type: Number,
     default: 0,
@@ -38,6 +41,12 @@ const StudentSchema = new mongoose.Schema({
   outsider: {
     type: Boolean,
   },
+  registered_events: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+    },
+  ],
   visited_events: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -46,6 +55,4 @@ const StudentSchema = new mongoose.Schema({
   ],
 });
 
-const Student = mongoose.model("Student", StudentSchema);
-
-module.exports = Student;
+module.exports = mongoose.model("Student", StudentSchema);

@@ -1,6 +1,6 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
-const OTPSchema=new mongoose.Schema({
+const OTPSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true
@@ -16,5 +16,5 @@ const OTPSchema=new mongoose.Schema({
     },
 });
 
-const OTP = mongoose.model("OTP", OTPSchema);
-module.exports = OTP;
+module.exports = mongoose.model("OTP", OTPSchema);
+ 
