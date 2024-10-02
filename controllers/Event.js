@@ -1,81 +1,150 @@
-const Event = require("../models/EventModel");
+const Event = require('../models/EventModel');
+const Club = require('../models/ClubModel');
+const {UploadMedia} = require('../utilities');
 
 const createEvent = async (req, res) => {
-  try {
-    const newEvent = new Event(req.body);
-    await newEvent.save();
-    res
-      .status(201)
-      .json({ message: "Event successfully created", event: newEvent });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
+  try{
+    const {name,clubId,description} = req.body;
+    const {image} = req.files;
+
+    if(!name || !clubId || !description || !image){
+        return res.status(404).json({
+            success: false,
+            message: "Data is Missing",
+        })
+    }
+
+    const club = await Club.findById(clubId);
+    if(!club){
+      return res.status(404).json({
+        success: false,
+        message: "Club not found",
+      });
+    }
+
+    const imageResponse = await UploadMedia(image,"TechKriya'24");
+    if(!imageResponse){
+      return res.status(402).json({
+        success: false,
+        message: "Unable to Uplaod image",
+      })
+    }
+
+    const newEvent = await Event.create({
+      name,
+      club: club._id,
+      description,
+      image: imageResponse?.secure_url,
+    });
+
+    club.events.push(newEvent._id);
+    await club.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Event successfully created",
+    });
+  }catch(error){
+    console.log(error);
+    return res.status(400).json({
+        success: false, 
+        message: "Unable to Create Event",
+    });
   }
 };
 
 const deleteEvent = async (req, res) => {
   try {
-    const { event_id } = req.params;
-    const deletedEvent = await Event.findOneAndDelete({ event_id });
-
-    if (!deletedEvent) {
-      return res.status(404).json({ message: "Event not found" });
+    const { eventId } = req.params;
+    if(!eventId){
+      return res.status(404).json({
+        success: false,
+        message: "Event ID is missing",
+      })
     }
 
-    res
-      .status(200)
-      .json({ message: "Event successfully deleted", event: deletedEvent });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const deletedEvent = await Event.findOneAndDelete({ eventId });
 
-const editEvent = async (req, res) => {
-  try {
-    const { event_id } = req.params;
-    const updatedEvent = await Event.findOneAndUpdate({ event_id }, req.body, {
-      new: true,
+    if(!deletedEvent){
+      return res.status(404).json({ 
+        success: false,
+        message: "Event not found" 
+      });
+    }
+
+    return res.status(200).json({ 
+      success: true,
+      message: "Event successfully deleted", 
+    })
+  }catch(error){
+    console.log(error);
+    return res.status(500).json({ 
+      success: false,
+      message: "Unable to Delete Event",
     });
-
-    if (!updatedEvent) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    res
-      .status(200)
-      .json({ message: "Event successfully updated", event: updatedEvent });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 };
 
-const getAllEvents = async (req, res) => {
-  try {
-    const events = await Event.find();
-    res.status(200).json(events);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+const getAllEvents = async (_, res) => {
+  try{
+    const events = await Event.find({});
+    if(!events){
+      return res.status(404).json({
+        success: false,
+        message: "Unable to Fetch Events",
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Fetched All Events",
+      data: events,
+    })
+  }catch(error){
+    console.log(error);
+    return res.status(500).json({ 
+      success: false,
+      message: "Unable to Fetch events",
+    });
   }
 };
 
-const getEventById = async (req, res) => {
-  try {
-    const { event_id } = req.params;
-    const event = await Event.findOne({ event_id });
-
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
+const getEventById = async (_, res) => {
+  try{
+    const { eventId } = req.params;
+    if(!eventId){
+      return res.status(404).json({
+        success: false,
+        message: "Event Id not found",
+      })
     }
 
-    res.status(200).json(event);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    const event = await Event.findOne({ eventId });
+
+    if(!event){
+      return res.status(404).json({ 
+        success: false,
+        message: "Event not found"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Fetched Event Successfully",
+      data: event,
+    })
+  }catch(error){
+    console.log(error);
+    return res.status(500).json({ 
+      success: false,
+      message: "Unable to Fetch Event",
+    });
   }
 };
 
 module.exports = {
   createEvent,
   deleteEvent,
-  editEvent,
   getAllEvents,
   getEventById,
 };

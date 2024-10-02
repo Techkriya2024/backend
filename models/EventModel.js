@@ -24,12 +24,14 @@ const EventSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
+      default: [],
     },
   ],
   visited_users: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
+      default: [],
     },
   ],
 });
