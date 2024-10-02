@@ -1,6 +1,6 @@
-const Student = require("../models/Student");
-const Events = require("../models/Events");
-const Club = require("../models/Club");
+const Student = require("../models/StudentModel");
+const Events = require("../models/EventModel");
+const Club = require("../models/ClubModel");
 
 exports.fetchAllEventsWithRegisteredAndVisitedUsers = async(_,res) => {
     try{

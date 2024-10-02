@@ -10,6 +10,7 @@ const ClubSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
+      default: [],
     },
   ],
 });

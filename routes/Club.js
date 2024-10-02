@@ -5,19 +5,11 @@ const {authMiddlewares} = require("../middlewares");
 const {clubController} = require('../controllers');
 
 // WRITE ROUTES HERE
-router.post("/clubs", authMiddlewares, clubController.createClub);
+router.post("/createClub", clubController.createClub);
+router.put("/editClub/:clubId", clubController.editClub);
+router.delete("/deleteClub/:clubId", clubController.deleteClub);
+router.get("/getAllClubs", clubController.getAllClubs);
+router.get("/getClub/:clubId", clubController.getClubById);
+router.get("/getClubEvents/:clubId", clubController.getClubEvents);
 
-router.put("/clubs/:clubId", authMiddlewares, clubController.editClub);
-
-
-router.delete("/clubs/:clubId", authMiddlewares, clubController.deleteClub);
-
-
-router.get("/clubs", clubController.getAllClubs);
-
-
-router.get("/clubs/:clubId", clubController.getClubById);
-
-
-router.get("/clubs/:clubId/events", clubController.getClubEvents);
 module.exports = router;
