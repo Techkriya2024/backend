@@ -38,7 +38,7 @@ const registeredEvents = async(req, res) => {
         return res.status(200).json({
             success: true,
             message: "Fetched Registered Events",
-            events
+            data: events
         });
     }catch(error){
         console.log(error);
@@ -61,7 +61,7 @@ const visitedEvents = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Fetched Visited Events",
-            events
+            data: events
         })
     }catch(error){
         console.log(error);
@@ -82,7 +82,7 @@ const getRank = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Fetched User Rank",
-            rank,
+            data: rank,
         })
     }catch(error){
         console.log(error);
@@ -125,7 +125,7 @@ const registerNewEvent = async (req, res) => {
     }catch(error){
         console.log(error);
         return res.status(500).json({
-            success: true,
+            success: false,
             message: "Error registering for event"
         });
     }
