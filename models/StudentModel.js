@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const StudentSchema = new mongoose.Schema({
-  user_id: {
-    type: String,
-    required: [true, "User ID is required"],
-    unique: true,
-  },
   name: {
     type: String,
     required: [true, "Name is required"],
@@ -34,6 +29,7 @@ const StudentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Registration number is required"],
     unique: true,
+    match: [/^\d+$/, "Only digits are allowed"],
   },
   coins: {
     type: Number,
@@ -41,14 +37,7 @@ const StudentSchema = new mongoose.Schema({
   },
   outsider: {
     type: Boolean,
-    default: false,
   },
-  registered_events: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Event",
-    },
-  ],
   visited_events: [
     {
       type: mongoose.Schema.Types.ObjectId,
