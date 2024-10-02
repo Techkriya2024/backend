@@ -175,11 +175,6 @@ exports.login = async(req,res)=>{
                 message:"Password Not Matching"
             })
         }
-
-        return res.status(200).json({
-            success : true,
-            message : "Login Successful",
-        })
     }
     catch(error){
         console.log(error);
