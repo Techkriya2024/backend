@@ -1,9 +1,34 @@
-// TODO: To be updated
-const authMiddlewares = (req, res, next) => {
-    console.log(`Request Method: ${req.method}`);
-    console.log(`Request URL: ${req.url}`);
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
-    next();
-};
+exports.auth = async(req,res,next)=>{
+    try{
+        const token= req.cookies.token || req.body.token || req.header("Authorization").replace("Bearer ", "");
+        if(!token){
+            return res.status(500).json({
+                success: false,
+                message: "token is missing"
+            });
+        }
 
-module.exports = authMiddlewares;
+        try{
+            const decode=jwt.verify(token,process.env.JWT_SECRET)
+            req.user=decode
+        }catch(error){
+            return res.status(500).json({
+                success: false,
+                message: "Error jwt verification",
+            });
+
+        }
+        next();
+    }
+    catch(error){
+        return res.status(500).json({
+			success: false,
+			message: "Unable to Auth",
+			error: error.message,
+		});
+    }
+
+}

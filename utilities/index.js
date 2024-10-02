@@ -1,0 +1,1 @@
+exports.MailSender = require('./MailSender');
