@@ -5,14 +5,15 @@ const {MailSender} = require('../utilities');
 const editUser = async (req, res) => {
     try{
         const userId = req.user._id;
-        const {name, email, password, year, college} = req.body;
+        const {name, email, password, year, college, image} = req.body;
 
         await Student.findByIdAndUpdate(userId, {
             name,
             email,
             password,
             year,
-            college
+            college,
+            image
         }, {new: true});
 
         return res.status(200).json({

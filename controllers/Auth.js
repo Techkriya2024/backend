@@ -61,13 +61,12 @@ exports.sendOTP = async(req,res)=>{
             message:"Error in Sending OTP"
         })
     }
-
 }
 
 exports.signUp = async(req,res)=>{
     try{
-        const {name,email,password,year,college,reg_no,outsider,otp} = req.body;
-        if(!name || year===null || !college || !email || !password || reg_no===null || otp===null){
+        const {name,email,password,year,college,reg_no,outsider,otp,image} = req.body;
+        if(!name || year===null || !college || !email || !password || reg_no===null || otp===null || image===null){
             return res.status(401).json({
                 success:false,
                 message:"all details required"
@@ -110,6 +109,7 @@ exports.signUp = async(req,res)=>{
             reg_no,
             coins: 0,
             outsider,
+            image,
         });
 
         return res.status(200).json({
